@@ -1,12 +1,7 @@
 import styled from 'styled-components'
 import { shade } from 'polished'
 import signInBackgroundImg from '../../assets/sign-in-background.jpg'
-import {
-  bgColor,
-  secondaryColor,
-  structureDark,
-  textColor,
-} from '../../styles/vars'
+import { secondaryColor, textColor } from '../../styles/vars'
 
 export const Container = styled.div`
   height: 100vh;
@@ -29,40 +24,6 @@ export const Content = styled.div`
 
     h1 {
       margin-bottom: 24px;
-    }
-
-    input {
-      color: ${textColor};
-      background: ${structureDark};
-      border-radius: 10px;
-      border: 2px solid ${structureDark};
-      padding: 16px;
-      width: 100%;
-
-      & + input {
-        margin-top: 8px;
-      }
-
-      &::placeholder {
-        color: #666360;
-      }
-    }
-
-    button {
-      background: ${secondaryColor};
-      color: ${bgColor};
-      height: 56px;
-      border-radius: 10px;
-      border: 0;
-      padding: 0 16px;
-      width: 100%;
-      font-weight: 500;
-      margin-top: 16px;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background: ${shade(0.2, secondaryColor)};
-      }
     }
 
     a {
