@@ -1,17 +1,40 @@
 import React from 'react'
 import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi'
 import { useForm, FormContext } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Container, Content, Background } from './styles'
 import logoImg from '../../assets/logo.svg'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
+import api from '../../services/api'
+import { useToast } from '../../hooks/toast'
 
 const Signup: React.FC = () => {
   const formMethods = useForm()
+  const { addToast } = useToast()
+  const history = useHistory()
 
-  function onSubmit(data: object): void {
-    console.log(data)
+  async function onSubmit({
+    name,
+    email,
+    password,
+  }: Record<string, string>): Promise<void> {
+    try {
+      await api.post('/users', { name, email, password })
+
+      history.push('/')
+      addToast({
+        title: 'Cadastro realizado',
+        type: 'success',
+        message: 'Você já pode fazer seu logon',
+      })
+    } catch (error) {
+      addToast({
+        title: 'Falha no cadastro',
+        type: 'error',
+        message: error.message,
+      })
+    }
   }
 
   return (
