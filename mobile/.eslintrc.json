@@ -25,6 +25,7 @@
   "rules": {
     "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
     "react/jsx-props-no-spreading": "off",
+    "react/jsx-wrap-multilines": ["error", { "prop": "ignore" }],
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
