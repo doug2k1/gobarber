@@ -18,6 +18,7 @@ export const StyledTextInput = styled.TextInput`
   color: #fff;
   font-size: 16px;
   font-family: 'RobotoSlab-Regular';
+  align-self: stretch;
 `
 
 export const StyledIcon = styled(Icon)`

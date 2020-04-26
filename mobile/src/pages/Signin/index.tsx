@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   Image,
   KeyboardAvoidingView,
   Platform,
   View,
   ScrollView,
+  TextInput,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
-import { useForm, Controller, FormContext } from 'react-hook-form'
+import { useForm, FormContext } from 'react-hook-form'
 import {
   Container,
   Title,
@@ -25,6 +26,7 @@ import { secondaryColor } from '../../styles/vars'
 const Signin: React.FC = () => {
   const navigation = useNavigation()
   const formMethods = useForm()
+  const passwordInputRef = useRef<TextInput>(null)
 
   async function onSubmit({
     email,
@@ -52,23 +54,36 @@ const Signin: React.FC = () => {
             </View>
 
             <FormContext {...formMethods}>
-              <Controller
-                as={Input}
-                control={formMethods.control}
+              <Input
                 name="email"
-                onChange={(args) => args[0].nativeEvent.text}
                 icon="mail"
+                control={formMethods.control}
+                onChange={(args) => args[0].nativeEvent.text}
                 placeholder="E-mail"
                 keyboardType="email-address"
+                autoCorrect={false}
+                autoCapitalize="none"
+                returnKeyType="next"
+                rules={{
+                  required: 'Informe seu e-mail',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: 'Informe um e-mail válido',
+                  },
+                }}
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
-              <Controller
-                as={Input}
-                control={formMethods.control}
+              <Input
                 name="password"
-                onChange={(args) => args[0].nativeEvent.text}
                 icon="lock"
+                ref={passwordInputRef}
+                control={formMethods.control}
+                onChange={(args) => args[0].nativeEvent.text}
                 placeholder="Senha"
                 secureTextEntry
+                returnKeyType="send"
+                rules={{ required: 'Informe sua senha' }}
+                onSubmitEditing={formMethods.handleSubmit(onSubmit)}
               />
 
               <Button onPress={formMethods.handleSubmit(onSubmit)}>
