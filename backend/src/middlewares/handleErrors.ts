@@ -1,10 +1,11 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import AppError from '../errors/AppError'
 
 export default function handleErrors(
   e: Error,
   req: Request,
-  res: Response
+  res: Response,
+  _next: NextFunction
 ): Response {
   if (e instanceof AppError) {
     return res.status(e.statusCode).json({ error: e.message })
