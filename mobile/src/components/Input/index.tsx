@@ -19,7 +19,6 @@ const Input: React.FC<Props> = forwardRef(({ name, icon, ...rest }, ref) => {
   const fieldError = errors[name]
 
   function handleFocus(): void {
-    console.log('handleFocus')
     setIsFocused(true)
   }
 

@@ -23,22 +23,23 @@ import logoImg from '../../assets/logo.png'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 import { secondaryColor } from '../../styles/vars'
+import { useAuth } from '../../hooks/auth'
 
 const Signin: React.FC = () => {
   const navigation = useNavigation()
   const formMethods = useForm()
   const passwordInputRef = useRef<TextInput>(null)
+  const { signin } = useAuth()
 
   async function onSubmit({
     email,
     password,
   }: Record<string, string>): Promise<void> {
-    /* try {
+    try {
       await signin({ email, password })
-    } catch { */
-    console.log(email, password)
-    Alert.alert('Falha no login', 'Verifique o e-mail e senha informados')
-    // }
+    } catch {
+      Alert.alert('Falha no login', 'Verifique o e-mail e senha informados')
+    }
   }
 
   return (

@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
 import { useForm, FormContext } from 'react-hook-form'
+import api from '../../services/api'
 import { Container, Title, BackToSignin, BackToSigninText } from './styles'
 import logoImg from '../../assets/logo.png'
 import Input from '../../components/Input'
@@ -28,8 +29,13 @@ const Signup: React.FC = () => {
     email,
     password,
   }: Record<string, string>): Promise<void> {
-    console.log(name, email, password)
-    Alert.alert('Falha no cadastro', 'Por favor, tente novamente mais tarde.')
+    try {
+      await api.post('/users', { name, email, password })
+      Alert.alert('Cadastro realizado', 'Você já pode fazer seu logon')
+      navigation.goBack()
+    } catch (error) {
+      Alert.alert('Falha no cadastro', error.message)
+    }
   }
 
   return (
