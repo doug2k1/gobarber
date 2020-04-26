@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
@@ -28,6 +29,7 @@ const Signup: React.FC = () => {
     password,
   }: Record<string, string>): Promise<void> {
     console.log(name, email, password)
+    Alert.alert('Falha no cadastro', 'Por favor, tente novamente mais tarde.')
   }
 
   return (

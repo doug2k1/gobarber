@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
@@ -32,7 +33,12 @@ const Signin: React.FC = () => {
     email,
     password,
   }: Record<string, string>): Promise<void> {
+    /* try {
+      await signin({ email, password })
+    } catch { */
     console.log(email, password)
+    Alert.alert('Falha no login', 'Verifique o e-mail e senha informados')
+    // }
   }
 
   return (
@@ -82,6 +88,7 @@ const Signin: React.FC = () => {
                 placeholder="Senha"
                 secureTextEntry
                 returnKeyType="send"
+                textContentType="password"
                 rules={{ required: 'Informe sua senha' }}
                 onSubmitEditing={formMethods.handleSubmit(onSubmit)}
               />
