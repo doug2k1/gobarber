@@ -7,6 +7,8 @@ import {
   ScrollView,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
+import { useNavigation } from '@react-navigation/native'
+import { useForm, Controller, FormContext } from 'react-hook-form'
 import {
   Container,
   Title,
@@ -21,6 +23,16 @@ import Button from '../../components/Button'
 import { secondaryColor } from '../../styles/vars'
 
 const Signin: React.FC = () => {
+  const navigation = useNavigation()
+  const formMethods = useForm()
+
+  async function onSubmit({
+    email,
+    password,
+  }: Record<string, string>): Promise<void> {
+    console.log(email, password)
+  }
+
   return (
     <>
       <KeyboardAvoidingView
@@ -39,11 +51,30 @@ const Signin: React.FC = () => {
               <Title>Faça seu logon</Title>
             </View>
 
-            <Input name="email" icon="mail" placeholder="E-mail" />
-            <Input name="password" icon="lock" placeholder="Senha" />
+            <FormContext {...formMethods}>
+              <Controller
+                as={Input}
+                control={formMethods.control}
+                name="email"
+                onChange={(args) => args[0].nativeEvent.text}
+                icon="mail"
+                placeholder="E-mail"
+                keyboardType="email-address"
+              />
+              <Controller
+                as={Input}
+                control={formMethods.control}
+                name="password"
+                onChange={(args) => args[0].nativeEvent.text}
+                icon="lock"
+                placeholder="Senha"
+                secureTextEntry
+              />
 
-            <Button>Entrar</Button>
-
+              <Button onPress={formMethods.handleSubmit(onSubmit)}>
+                Entrar
+              </Button>
+            </FormContext>
             <ForgotPassword>
               <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
             </ForgotPassword>
@@ -51,7 +82,7 @@ const Signin: React.FC = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <CreateAccountButton>
+      <CreateAccountButton onPress={() => navigation.navigate('Signup')}>
         <Icon name="log-in" size={20} color={secondaryColor} />
         <CreateAccountText>Criar uma conta</CreateAccountText>
       </CreateAccountButton>
