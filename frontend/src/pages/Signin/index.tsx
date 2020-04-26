@@ -5,12 +5,27 @@ import { Container, Content, Background } from './styles'
 import logoImg from '../../assets/logo.svg'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
+import { useAuth } from '../../hooks/auth'
+import { useToast } from '../../hooks/toast'
 
 const Signin: React.FC = () => {
   const formMethods = useForm()
+  const { signin } = useAuth()
+  const { addToast } = useToast()
 
-  function onSubmit(data: object): void {
-    console.log(data)
+  async function onSubmit({
+    email,
+    password,
+  }: Record<string, string>): Promise<void> {
+    try {
+      await signin({ email, password })
+    } catch {
+      addToast({
+        title: 'Falha no login',
+        type: 'error',
+        message: 'Verifique o e-mail e senha informados',
+      })
+    }
   }
 
   return (
