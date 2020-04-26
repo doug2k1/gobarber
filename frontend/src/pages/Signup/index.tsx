@@ -1,6 +1,7 @@
 import React from 'react'
 import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi'
 import { useForm, FormContext } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { Container, Content, Background } from './styles'
 import logoImg from '../../assets/logo.svg'
 import Input from '../../components/Input'
@@ -58,10 +59,10 @@ const Signup: React.FC = () => {
           </form>
         </FormContext>
 
-        <a href="signup">
+        <Link to="/">
           <FiArrowLeft />
           Voltar para o logon
-        </a>
+        </Link>
       </Content>
     </Container>
   )

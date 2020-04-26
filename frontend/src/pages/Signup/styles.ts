@@ -1,12 +1,24 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { shade } from 'polished'
 import signupBackgroundImg from '../../assets/signup-background.jpg'
-import { secondaryColor, textColor } from '../../styles/vars'
+import { textColor } from '../../styles/vars'
+
+const appearFromRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(50px)
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0)
+  }
+`
 
 export const Container = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: stretch;
+  overflow: hidden;
 `
 
 export const Content = styled.div`
@@ -16,6 +28,7 @@ export const Content = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 700px;
+  animation: ${appearFromRight} 1s;
 
   form {
     margin: 80px 0;
