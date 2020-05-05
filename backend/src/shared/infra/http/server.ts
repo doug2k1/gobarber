@@ -2,10 +2,10 @@ import express, { json } from 'express'
 import 'express-async-errors'
 import 'reflect-metadata'
 import cors from 'cors'
-import routes from './routes'
-import './database'
-import uploadConfig from './config/upload'
+import '../typeorm'
+import uploadConfig from '@config/upload'
 import handleErrors from './middlewares/handleErrors'
+import routes from './routes'
 
 const app = express()
 app.use(cors())
