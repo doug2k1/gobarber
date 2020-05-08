@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import uploadConfig from '@config/upload'
 import AppError from '@shared/errors/AppError'
+import { injectable, inject } from 'tsyringe'
 import User from '../infra/typeorm/entities/User'
 import { IUsersRepository } from '../repositories/IUserRepository'
 
@@ -10,8 +11,12 @@ interface IRequest {
   filename: string
 }
 
+@injectable()
 export default class UpdateUserAvatarService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
+  ) {}
 
   private static async deleteCurrentAvatar(avatar: string): Promise<void> {
     if (avatar) {
