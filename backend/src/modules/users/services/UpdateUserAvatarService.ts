@@ -1,10 +1,8 @@
-import path from 'path'
-import fs from 'fs'
-import uploadConfig from '@config/upload'
 import AppError from '@shared/errors/AppError'
 import { injectable, inject } from 'tsyringe'
+import IStorageProvider from '@shared/providers/StorageProviders/models/IStorageProvider'
 import User from '../infra/typeorm/entities/User'
-import { IUsersRepository } from '../repositories/IUserRepository'
+import { IUsersRepository } from '../repositories/IUsersRepository'
 
 interface IRequest {
   id: string
@@ -15,19 +13,11 @@ interface IRequest {
 export default class UpdateUserAvatarService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider
   ) {}
-
-  private static async deleteCurrentAvatar(avatar: string): Promise<void> {
-    if (avatar) {
-      const userAvatarPath = path.join(uploadConfig.storagePath, avatar)
-      const userAvatarFileExists = await fs.promises.stat(userAvatarPath)
-
-      if (userAvatarFileExists) {
-        await fs.promises.unlink(userAvatarPath)
-      }
-    }
-  }
 
   public async run({ id, filename }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(id)
@@ -37,10 +27,10 @@ export default class UpdateUserAvatarService {
     }
 
     if (user.avatar) {
-      UpdateUserAvatarService.deleteCurrentAvatar(user.avatar)
+      this.storageProvider.deleteFile(user.avatar)
     }
 
-    user.avatar = filename
+    user.avatar = await this.storageProvider.saveFile(filename)
     await this.usersRepository.save(user)
 
     return user
