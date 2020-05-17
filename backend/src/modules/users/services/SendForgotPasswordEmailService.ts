@@ -1,6 +1,4 @@
-// import AppError from '@shared/errors/AppError'
 import { inject, injectable } from 'tsyringe'
-// import User from '../infra/typeorm/entities/User'
 import IMailProvider from '@shared/providers/MailProvider/models/IMailProvider'
 import { IUsersRepository } from '../repositories/IUsersRepository'
 import { IUsersTokensRepository } from '../repositories/IUsersTokensRepository'
