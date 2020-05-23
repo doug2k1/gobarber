@@ -1,17 +1,23 @@
 import FakeStorageProvider from '@shared/providers/StorageProviders/fakes/FakeStorageProvider'
 import AppError from '@shared/errors/AppError'
+import IStorageProvider from '@shared/providers/StorageProviders/models/IStorageProvider'
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository'
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider'
-import CreateUserService from './CreateUserService'
 import UpdateUserAvatarService from './UpdateUserAvatarService'
+import { IUsersRepository } from '../repositories/IUsersRepository'
+
+let fakeUsersRepository: IUsersRepository
+let fakeStorageProvider: IStorageProvider
 
 describe('UpdateUserAvatar', () => {
-  it('should update user avatar', async () => {
-    const fakeUsersRepository = new FakeUsersRepository()
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository()
+    fakeStorageProvider = new FakeStorageProvider()
+  })
 
+  it('should update user avatar', async () => {
     const updateUserAvatar = new UpdateUserAvatarService(
       fakeUsersRepository,
-      new FakeStorageProvider()
+      fakeStorageProvider
     )
 
     let user = await fakeUsersRepository.create({
@@ -26,8 +32,6 @@ describe('UpdateUserAvatar', () => {
   })
 
   it('should delete existing avatar file', async () => {
-    const fakeUsersRepository = new FakeUsersRepository()
-    const fakeStorageProvider = new FakeStorageProvider()
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile')
 
     const updateUserAvatar = new UpdateUserAvatarService(
@@ -50,8 +54,8 @@ describe('UpdateUserAvatar', () => {
 
   it('should throw error if user is not found', () => {
     const updateUserAvatar = new UpdateUserAvatarService(
-      new FakeUsersRepository(),
-      new FakeStorageProvider()
+      fakeUsersRepository,
+      fakeStorageProvider
     )
 
     expect(

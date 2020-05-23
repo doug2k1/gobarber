@@ -2,12 +2,22 @@ import AppError from '@shared/errors/AppError'
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository'
 import CreateUserService from './CreateUserService'
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider'
+import IHashProvider from '../providers/HashProvider/models/IHashProvider'
+import { IUsersRepository } from '../repositories/IUsersRepository'
+
+let fakeUsersRepository: IUsersRepository
+let fakeHashProvider: IHashProvider
 
 describe('CreateUser', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository()
+    fakeHashProvider = new FakeHashProvider()
+  })
+
   it('should create a new user', async () => {
     const createUser = new CreateUserService(
-      new FakeUsersRepository(),
-      new FakeHashProvider()
+      fakeUsersRepository,
+      fakeHashProvider
     )
 
     const data = {
@@ -24,8 +34,8 @@ describe('CreateUser', () => {
 
   it('should not create two users with the same e-mail', async () => {
     const createUser = new CreateUserService(
-      new FakeUsersRepository(),
-      new FakeHashProvider()
+      fakeUsersRepository,
+      fakeHashProvider
     )
 
     const email = 'jhon@example.com'

@@ -3,11 +3,19 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository'
 import AuthenticateUserService from './AuthenticateUserService'
 import CreateUserService from './CreateUserService'
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider'
+import { IUsersRepository } from '../repositories/IUsersRepository'
+import IHashProvider from '../providers/HashProvider/models/IHashProvider'
+
+let fakeUsersRepository: IUsersRepository
+let fakeHashProvider: IHashProvider
 
 describe('AuthenticateUser', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository()
+    fakeHashProvider = new FakeHashProvider()
+  })
+
   it('should authenticate an user with valid credentials', async () => {
-    const fakeUsersRepository = new FakeUsersRepository()
-    const fakeHashProvider = new FakeHashProvider()
     const authenticateUser = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider
@@ -34,8 +42,6 @@ describe('AuthenticateUser', () => {
   })
 
   it('should fail authentication when email is not found', async () => {
-    const fakeUsersRepository = new FakeUsersRepository()
-    const fakeHashProvider = new FakeHashProvider()
     const authenticateUser = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider
@@ -50,8 +56,6 @@ describe('AuthenticateUser', () => {
   })
 
   it('should fail authentication when password is incorrect', async () => {
-    const fakeUsersRepository = new FakeUsersRepository()
-    const fakeHashProvider = new FakeHashProvider()
     const authenticateUser = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider

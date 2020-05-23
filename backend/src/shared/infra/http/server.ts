@@ -11,7 +11,7 @@ import routes from './routes'
 const app = express()
 app.use(cors())
 app.use(json())
-app.use('/uploads', express.static(uploadConfig.storagePath))
+app.use('/uploads', express.static(uploadConfig.uploadFolder))
 app.use(routes)
 app.use(handleErrors)
 

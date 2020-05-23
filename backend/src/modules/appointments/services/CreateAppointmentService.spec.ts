@@ -1,11 +1,18 @@
 import AppError from '@shared/errors/AppError'
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository'
 import CreateAppointmentService from './CreateAppointmentService'
+import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository'
+
+let fakeAppointmentsRepository: IAppointmentsRepository
 
 describe('CreateAppointment', () => {
+  beforeEach(() => {
+    fakeAppointmentsRepository = new FakeAppointmentsRepository()
+  })
+
   it('should create a new appointment', async () => {
     const createAppointment = new CreateAppointmentService(
-      new FakeAppointmentsRepository()
+      fakeAppointmentsRepository
     )
 
     const data = {
@@ -21,7 +28,7 @@ describe('CreateAppointment', () => {
 
   it('should not create two appointments at the same time', async () => {
     const createAppointment = new CreateAppointmentService(
-      new FakeAppointmentsRepository()
+      fakeAppointmentsRepository
     )
 
     const date = new Date('2020-05-08T19:10:43.535Z')
