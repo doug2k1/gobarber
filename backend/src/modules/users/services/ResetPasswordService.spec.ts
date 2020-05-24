@@ -41,7 +41,7 @@ describe('ResetPasswordService', () => {
   })
 
   it('should not reset the password with an invalid token', async () => {
-    return expect(
+    await expect(
       resetPassword.run({ token: 'invalid', password: '456' })
     ).rejects.toBeInstanceOf(AppError)
   })
@@ -49,7 +49,7 @@ describe('ResetPasswordService', () => {
   it('should throw error when the user does not exists', async () => {
     const { token } = await fakeUsersTokensRepository.create('non-existent')
 
-    return expect(
+    await expect(
       resetPassword.run({ token, password: '456' })
     ).rejects.toBeInstanceOf(AppError)
   })

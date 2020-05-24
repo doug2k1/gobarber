@@ -7,19 +7,16 @@ import { IUsersRepository } from '../repositories/IUsersRepository'
 
 let fakeUsersRepository: IUsersRepository
 let fakeHashProvider: IHashProvider
+let createUser: CreateUserService
 
 describe('CreateUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository()
     fakeHashProvider = new FakeHashProvider()
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider)
   })
 
   it('should create a new user', async () => {
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider
-    )
-
     const data = {
       name: 'John',
       email: 'john@example.com',
@@ -33,15 +30,10 @@ describe('CreateUser', () => {
   })
 
   it('should not create two users with the same e-mail', async () => {
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider
-    )
-
     const email = 'jhon@example.com'
     await createUser.run({ name: 'John 1', email, password: '123456' })
 
-    return expect(
+    await expect(
       createUser.run({ name: 'John 2', email, password: 'abcdef' })
     ).rejects.toBeInstanceOf(AppError)
   })

@@ -8,23 +8,21 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider'
 
 let fakeUsersRepository: IUsersRepository
 let fakeHashProvider: IHashProvider
+let authenticateUser: AuthenticateUserService
+let createUser: CreateUserService
 
 describe('AuthenticateUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository()
     fakeHashProvider = new FakeHashProvider()
+    authenticateUser = new AuthenticateUserService(
+      fakeUsersRepository,
+      fakeHashProvider
+    )
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider)
   })
 
   it('should authenticate an user with valid credentials', async () => {
-    const authenticateUser = new AuthenticateUserService(
-      fakeUsersRepository,
-      fakeHashProvider
-    )
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider
-    )
-
     const data = {
       name: 'John',
       email: 'john@example.com',
@@ -42,12 +40,7 @@ describe('AuthenticateUser', () => {
   })
 
   it('should fail authentication when email is not found', async () => {
-    const authenticateUser = new AuthenticateUserService(
-      fakeUsersRepository,
-      fakeHashProvider
-    )
-
-    return expect(
+    await expect(
       authenticateUser.run({
         email: 'nouser@example.com',
         password: '123456',
@@ -56,15 +49,6 @@ describe('AuthenticateUser', () => {
   })
 
   it('should fail authentication when password is incorrect', async () => {
-    const authenticateUser = new AuthenticateUserService(
-      fakeUsersRepository,
-      fakeHashProvider
-    )
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider
-    )
-
     const data = {
       name: 'John',
       email: 'john@example.com',
@@ -72,7 +56,7 @@ describe('AuthenticateUser', () => {
     }
     await createUser.run(data)
 
-    return expect(
+    await expect(
       authenticateUser.run({
         email: 'john@example.com',
         password: '123',

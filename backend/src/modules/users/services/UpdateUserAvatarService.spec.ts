@@ -7,19 +7,19 @@ import { IUsersRepository } from '../repositories/IUsersRepository'
 
 let fakeUsersRepository: IUsersRepository
 let fakeStorageProvider: IStorageProvider
+let updateUserAvatar: UpdateUserAvatarService
 
 describe('UpdateUserAvatar', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository()
     fakeStorageProvider = new FakeStorageProvider()
-  })
-
-  it('should update user avatar', async () => {
-    const updateUserAvatar = new UpdateUserAvatarService(
+    updateUserAvatar = new UpdateUserAvatarService(
       fakeUsersRepository,
       fakeStorageProvider
     )
+  })
 
+  it('should update user avatar', async () => {
     let user = await fakeUsersRepository.create({
       name: 'John',
       email: 'john@example.com',
@@ -34,11 +34,6 @@ describe('UpdateUserAvatar', () => {
   it('should delete existing avatar file', async () => {
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile')
 
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider
-    )
-
     let user = await fakeUsersRepository.create({
       name: 'John',
       email: 'john@example.com',
@@ -52,13 +47,8 @@ describe('UpdateUserAvatar', () => {
     expect(deleteFile).toHaveBeenLastCalledWith('avatar.jpg')
   })
 
-  it('should throw error if user is not found', () => {
-    const updateUserAvatar = new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider
-    )
-
-    expect(
+  it('should throw error if user is not found', async () => {
+    await expect(
       updateUserAvatar.run({ id: '1', filename: 'avatar.jpg' })
     ).rejects.toBeInstanceOf(AppError)
   })
