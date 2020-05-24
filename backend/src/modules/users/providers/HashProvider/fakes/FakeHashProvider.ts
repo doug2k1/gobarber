@@ -6,6 +6,8 @@ export default class FakeHashProvider implements IHashProvider {
   }
 
   public async compare(payload: string, hashed: string): Promise<boolean> {
-    return `${payload}hash` === hashed
+    const generated = await this.generate(payload)
+
+    return generated === hashed
   }
 }
