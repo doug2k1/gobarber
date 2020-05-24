@@ -112,4 +112,14 @@ describe('UpdateProfile', () => {
       })
     ).rejects.toBeInstanceOf(AppError)
   })
+
+  it('should throw error for non existent user', async () => {
+    await expect(
+      updateProfile.run({
+        id: 'non-existent',
+        name: 'John',
+        email: 'john@example.com',
+      })
+    ).rejects.toBeInstanceOf(AppError)
+  })
 })
